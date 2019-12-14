@@ -7,6 +7,27 @@
 Changelog
 =========
 
+0.6.9
+-----
+
+- Implemented stepping iterators
+
+0.6.8
+-----
+
+- Fixed murmur implementation for x86 platform
+
+0.6.7
+-----
+
+- Specialized ``promote_type`` for ``std::complex``
+
+0.6.6
+-----
+
+- Fixed ``promote_type`` for ``std::chrono::time_point``
+- Update README for Conan installation instructions
+
 0.6.5
 -----
 

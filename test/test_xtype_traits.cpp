@@ -1,5 +1,6 @@
 /***************************************************************************
-* Copyright (c) 2016, Johan Mabille, Sylvain Corlay and Wolf Vollprecht    *
+* Copyright (c) Johan Mabille, Sylvain Corlay and Wolf Vollprecht          *
+* Copyright (c) QuantStack                                                 *
 *                                                                          *
 * Distributed under the terms of the BSD 3-Clause License.                 *
 *                                                                          *
@@ -128,6 +129,14 @@ namespace xtl
 
         res = std::is_same<constify_t<const int>, const int>::value;
         EXPECT_TRUE(res);
+    }
+
+    TEST(xtype_traits, promote_type)
+    {
+        using time_type = std::chrono::system_clock::time_point;
+        EXPECT_TRUE((std::is_same<time_type, promote_type_t<time_type, time_type>>::value));
+        EXPECT_TRUE((std::is_same<int, promote_type_t<unsigned char, unsigned char>>::value));
+        EXPECT_TRUE((std::is_same<std::complex<double>, promote_type_t<unsigned char, std::complex<double>>>::value));
     }
 }
 
