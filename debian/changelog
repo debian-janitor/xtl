@@ -1,5 +1,5 @@
-xtl (0.6.5-1) unstable; urgency=medium
+xtl (0.6.9-1) unstable; urgency=medium
 
   * Initial release (Closes: #939936)
 
- -- Vincent Bernat <bernat@debian.org>  Tue, 10 Sep 2019 21:22:28 +0200
+ -- Vincent Bernat <bernat@debian.org>  Sat, 14 Dec 2019 18:27:18 +0100
