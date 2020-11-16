@@ -88,6 +88,20 @@ namespace xtl
         EXPECT_FALSE(res3);
     }
 
+    TEST(mpl, index_of)
+    {
+        using type1 = mpl::vector<int, double, float>;
+        std::size_t res1 = mpl::index_of<type1, int>::value;
+        std::size_t res2 = mpl::index_of<type1, double>::value;
+        std::size_t res3 = mpl::index_of<type1, float>::value;
+        std::size_t res4 = mpl::index_of<type1, short>::value;
+
+        EXPECT_EQ(res1, 0u);
+        EXPECT_EQ(res2, 1u);
+        EXPECT_EQ(res3, 2u);
+        EXPECT_EQ(res4, SIZE_MAX);
+    }
+
     TEST(mpl, front)
     {
         using type = mpl::front_t<variant_t>;
@@ -134,12 +148,6 @@ namespace xtl
         EXPECT_TRUE(res);
     }
 
-    template <class T>
-    struct DEBUG
-    {
-        using type = typename T::coincoin;
-    };
-
     TEST(mpl, merge_set)
     {
         using arg2 = mpl::vector<double, float, int, short>;
@@ -156,15 +164,15 @@ namespace xtl
     TEST(mpl, find_if_)
     {
         using arg1 = mpl::vector<double, int, float, int>;
-        constexpr size_t res1 = mpl::find_if<std::is_integral, arg1>::value;
+        constexpr size_t res1 = mpl::find_if<xtl::is_integral, arg1>::value;
         EXPECT_EQ(res1, 1ul);
 
         using arg2 = mpl::vector<double, float, double>;
-        constexpr size_t res2 = mpl::find_if<std::is_integral, arg2>::value;
+        constexpr size_t res2 = mpl::find_if<xtl::is_integral, arg2>::value;
         EXPECT_EQ(res2, 3ul);
 
         using arg3 = mpl::vector<>;
-        constexpr size_t res3 = mpl::find_if<std::is_integral, arg3>::value;
+        constexpr size_t res3 = mpl::find_if<xtl::is_integral, arg3>::value;
         EXPECT_EQ(res3, 0ul);
     }
 

@@ -106,7 +106,7 @@ namespace adl
 namespace xtl
 {
     using iterator = adl::iterator_test;
-    
+
     TEST(xiterator_base, increment)
     {
         iterator it;
@@ -203,11 +203,11 @@ namespace xtl
     {
         using map_type = std::map<std::string, int>;
         map_type m = { {"a", 0}, {"b", 1}, {"c", 2} };
-        using iterator = xkey_iterator<map_type>;
+        using xkeyiterator = xkey_iterator<map_type>;
 
-        iterator it(m.begin());
+        xkeyiterator it(m.begin());
         EXPECT_EQ(*it, "a");
-        iterator it2 = it;
+        xkeyiterator it2 = it;
         EXPECT_EQ(it, it2);
         ++it2;
         EXPECT_EQ(*it2, "b");
@@ -215,7 +215,26 @@ namespace xtl
         ++it2;
         EXPECT_EQ(*it2, "c");
         ++it2;
-        EXPECT_EQ(it2, iterator(m.end()));
+        EXPECT_EQ(it2, xkeyiterator(m.end()));
+    }
+
+    TEST(xiterator_base, xvalue_iterator)
+    {
+        using map_type = std::map<std::string, int>;
+        map_type m = { {"a", 0}, {"b", 1}, {"c", 2} };
+        using xvalueiterator = xvalue_iterator<map_type>;
+
+        xvalueiterator it(m.begin());
+        EXPECT_EQ(*it, 0);
+        xvalueiterator it2 = it;
+        EXPECT_EQ(it, it2);
+        ++it2;
+        EXPECT_EQ(*it2, 1);
+        EXPECT_NE(it, it2);
+        ++it2;
+        EXPECT_EQ(*it2, 2);
+        ++it2;
+        EXPECT_EQ(it2, xvalueiterator(m.end()));
     }
 
     TEST(xiterator_base, tag_promotion)
@@ -277,4 +296,3 @@ namespace xtl
         EXPECT_EQ(it_end, it);
     }
 }
-

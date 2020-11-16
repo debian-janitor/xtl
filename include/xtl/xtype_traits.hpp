@@ -19,6 +19,40 @@
 namespace xtl
 {
     /************************************
+     * std proxy traits                 *
+     ************************************/
+
+    template <class T>
+    struct is_scalar : std::is_scalar<T>
+    {
+    };
+
+    template <class T>
+    struct is_arithmetic : std::is_arithmetic<T>
+    {
+    };
+
+    template <class T>
+    struct is_fundamental : std::is_fundamental<T>
+    {
+    };
+    
+    template <class T>
+    struct is_signed : std::is_signed<T>
+    {
+    };
+    
+    template <class T>
+    struct is_floating_point : std::is_floating_point<T>
+    {
+    };
+    
+    template <class T>
+    struct is_integral : std::is_integral<T>
+    {
+    };
+
+    /************************************
      * arithmetic type promotion traits *
      ************************************/
 
@@ -121,9 +155,9 @@ namespace xtl
     private:
 
         using V = std::decay_t<T>;
-        static constexpr bool is_arithmetic = std::is_arithmetic<V>::value;
-        static constexpr bool is_signed = std::is_signed<V>::value;
-        static constexpr bool is_integral = std::is_integral<V>::value;
+        static constexpr bool is_arithmetic = xtl::is_arithmetic<V>::value;
+        static constexpr bool is_signed = xtl::is_signed<V>::value;
+        static constexpr bool is_integral = xtl::is_integral<V>::value;
         static constexpr bool is_long_double = std::is_same<V, long double>::value;
 
     public:
@@ -322,7 +356,7 @@ namespace xtl
 #if !defined(__GNUC__) || (defined(__GNUC__) && (__GNUC__ >= 5))
 
     template <class... C>
-    constexpr bool requires = conjunction<C...>::value;
+    constexpr bool xtl_requires = conjunction<C...>::value;
 
     template <class... C>
     constexpr bool either = disjunction<C...>::value;
@@ -334,7 +368,7 @@ namespace xtl
     constexpr bool disallow_one = xtl::negation<xtl::disjunction<C...>>::value;
 
     template <class... C>
-    using check_requires = std::enable_if_t<requires<C...>, int>;
+    using check_requires = std::enable_if_t<xtl_requires<C...>, int>;
 
     template <class... C>
     using check_either = std::enable_if_t<either<C...>, int>;
@@ -382,7 +416,7 @@ namespace xtl
      **************/
 
     template <class... Args>
-    struct all_scalar : conjunction<std::is_scalar<Args>...>
+    struct all_scalar : conjunction<xtl::is_scalar<Args>...>
     {
     };
 
