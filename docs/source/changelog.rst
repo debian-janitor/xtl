@@ -7,6 +7,79 @@
 Changelog
 =========
 
+0.6.21
+------
+
+- CMake: Modernized GTest integration
+- Add support for ``xtl::endianness``
+
+0.6.20
+------
+
+- Added xtraits for future simple specialization
+- Added half_float implementation
+
+0.6.19
+------
+
+- Improved ``mpl::contains`` implementation
+- Added ``are_equivalent_sequences``
+- Various minor improvements
+
+0.6.18
+------
+
+- Relaxed dimension constraint on multidispatcher
+- Replaced throw with XTL_THROW to support disabling exceptions
+
+0.6.17
+------
+
+- Implemented ``index_of`` for ``mpl::vector``
+- Implemented multimethods pattern
+- Implemented visitor pattern
+
+0.6.16
+------
+
+- Fixed mpark variant inclusion guards
+- Add a serialiser for xvariant to json
+- Removed capture all by reference
+
+0.6.15
+------
+
+- Renamed mpark variant header inclusion guard
+
+0.6.14
+------
+
+- Implemented value iterator for map containers
+
+0.6.13
+------
+
+- mpark/variant small change for CUDA 10.2 workaround
+- Switched the documentation build to QuantStack channel
+- Refactored CI
+
+0.6.12
+------
+
+- NVCC CUDA compiler compatibility
+- Wrapped call to ``find_package``
+
+0.6.11
+------
+
+- Avoids C++20 "requires" keyword
+
+0.6.10
+------
+
+- Set up xtl target's public headers
+- CMake: adding C++14 standard to target
+
 0.6.9
 -----
 

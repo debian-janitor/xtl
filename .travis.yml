@@ -1,5 +1,5 @@
 language: cpp
-dist: trusty
+dist: xenial
 matrix:
   include:
     - os: linux
@@ -32,50 +32,26 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-4.9
-            - clang-3.6
-      env: COMPILER=clang CLANG=3.6
+            - g++-7
+      env: COMPILER=gcc GCC=7
     - os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-3.9
           packages:
-            - g++-4.9
-            - clang-3.9
-      env: COMPILER=clang CLANG=3.9
+            - g++-8
+      env: COMPILER=gcc GCC=8
     - os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
           packages:
-            - g++-4.9
-            - clang-4.0
-      env: COMPILER=clang CLANG=4.0
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
-          packages:
-            - g++-4.9
-            - clang-5.0
-      env: COMPILER=clang CLANG=5.0
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-          packages:
-            - clang-6.0
-      env: COMPILER=clang CLANG=6.0
+            - g++-9
+      env: COMPILER=gcc GCC=9
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode9
       compiler: clang
 env:
   global:
@@ -86,12 +62,7 @@ before_install:
     - |
       # Configure build variables
       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        if [[ "$COMPILER" == "gcc" ]]; then
-          export CXX=g++-$GCC CC=gcc-$GCC;
-        fi
-        if [[ "$COMPILER" == "clang" ]]; then
-          export CXX=clang++-$CLANG CC=clang-$CLANG;
-        fi
+        export CXX=g++-$GCC CC=gcc-$GCC;
       elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         export CXX=clang++ CC=clang;
       fi
@@ -99,6 +70,7 @@ install:
     # Define the version of miniconda to download
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         MINCONDA_OS=$MINCONDA_LINUX;
+        cat /proc/cpuinfo;
       elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         MINCONDA_OS=$MINCONDA_OSX;
       fi
@@ -108,7 +80,8 @@ install:
     - hash -r
     - conda config --set always_yes yes --set changeps1 no
     - conda update -q conda
-    - conda install cmake nlohmann_json -c QuantStack -c conda-forge
+    - conda env create --file environment-dev.yml
+    - source activate xtl
     # Testing
     - mkdir build
     - cd build

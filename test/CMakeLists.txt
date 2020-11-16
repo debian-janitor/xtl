@@ -19,8 +19,12 @@ if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(XTL_INCLUDE_DIR ${xtl_INCLUDE_DIRS})
 endif ()
 
-message(STATUS "Forcing tests build type to Release")
-set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+if(NOT CMAKE_BUILD_TYPE)
+    message(STATUS "Setting tests build type to Release")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+else()
+    message(STATUS "Tests build type is ${CMAKE_BUILD_TYPE}")
+endif()
 
 include(CheckCXXCompilerFlag)
 
@@ -33,9 +37,11 @@ endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU OR CMAKE_CXX_COMPILER_ID MATCHES Intel)
     add_compile_options(-Wunused-parameter -Wextra -Wreorder -Wconversion -Wsign-conversion)
 
-    CHECK_CXX_COMPILER_FLAG(-march=native HAS_MARCH_NATIVE)
-    if (HAS_MARCH_NATIVE)
-        add_compile_options(-march=native)
+    if(NOT CMAKE_CXX_FLAGS MATCHES "-march")
+        CHECK_CXX_COMPILER_FLAG(-march=native HAS_MARCH_NATIVE)
+        if (HAS_MARCH_NATIVE)
+            add_compile_options(-march=native)
+        endif()
     endif()
     if (XTL_DISABLE_EXCEPTIONS)
         add_compile_options(-fno-exceptions)
@@ -54,15 +60,17 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
   if(NOT WIN32)
     add_compile_options(-Wunused-parameter -Wextra -Wreorder -Wconversion -Wsign-conversion)
 
-    CHECK_CXX_COMPILER_FLAG(-march=native HAS_MARCH_NATIVE)
-    if (HAS_MARCH_NATIVE)
-        add_compile_options(-march=native)
+    if(NOT CMAKE_CXX_FLAGS MATCHES "-march")
+        CHECK_CXX_COMPILER_FLAG(-march=native HAS_MARCH_NATIVE)
+        if (HAS_MARCH_NATIVE)
+            add_compile_options(-march=native)
+        endif()
     endif()
     if (XTL_DISABLE_EXCEPTIONS)
         add_compile_options(-fno-exceptions)
     endif()
   else() # we are using clang-cl
-    add_compile_options(/EHsc /MP /bigobj -fms-compatibility)
+    add_compile_options(/EHsc /bigobj -fms-compatibility)
     set(CMAKE_EXE_LINKER_FLAGS /MANIFEST:NO)
     if (XTL_DISABLE_EXCEPTIONS)
         add_compile_options(/EHs-c-)
@@ -91,24 +99,23 @@ if(DOWNLOAD_GTEST OR GTEST_SRC_DIR)
         message(FATAL_ERROR "Build step for googletest failed: ${result}")
     endif()
 
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
     # Add googletest directly to our build. This defines
     # the gtest and gtest_main targets.
     add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
                      ${CMAKE_CURRENT_BINARY_DIR}/googletest-build EXCLUDE_FROM_ALL)
 
     set(GTEST_INCLUDE_DIRS "${gtest_SOURCE_DIR}/include")
-    set(GTEST_BOTH_LIBRARIES  gtest_main gtest)
+    add_library(GTest::GTest INTERFACE IMPORTED)
+    target_link_libraries(GTest::GTest INTERFACE gtest)
+    add_library(GTest::Main INTERFACE IMPORTED)
+    target_link_libraries(GTest::Main INTERFACE gtest_main)
 else()
     find_package(GTest REQUIRED)
 endif()
 
 find_package(Threads)
-
-include(TestBigEndian)
-TEST_BIG_ENDIAN(BIG_ENDIAN)
-if(BIG_ENDIAN)
-    add_definitions(-DSYSTEM_IS_BIG_ENDIAN)
-endif(BIG_ENDIAN)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 
@@ -120,16 +127,20 @@ set(XTL_TESTS
     test_xclosure.cpp
     test_xdynamic_bitset.cpp
     test_xfunctional.cpp
+    test_xhalf_float.cpp
     test_xhash.cpp
     test_xhierarchy_generator.cpp
     test_xiterator_base.cpp
     test_xmasked_value.cpp
     test_xmeta_utils.cpp
+    test_xmultimethods.cpp
     test_xoptional.cpp
     test_xsequence.cpp
     test_xtype_traits.cpp
+    test_xplatform.cpp
     test_xproxy_wrapper.cpp
     test_xvariant.cpp
+    test_xvisitor.cpp
 )
 
 if(nlohmann_json_FOUND)
@@ -147,7 +158,7 @@ foreach(filename IN LISTS XTL_TESTS)
 
     add_executable(${targetname} ${filename} ${XTL_HEADERS})
     target_include_directories(${targetname} PRIVATE ${XTL_INCLUDE_DIR})
-    target_link_libraries(${targetname} xtl ${GTEST_BOTH_LIBRARIES} Threads::Threads ${nlohmann_json_TARGET})
+    target_link_libraries(${targetname} xtl GTest::GTest GTest::Main Threads::Threads ${nlohmann_json_TARGET})
 
     add_test(NAME ${targetname} COMMAND ${targetname})
 endforeach()
@@ -157,6 +168,7 @@ target_include_directories(test_xtl PRIVATE ${XTL_INCLUDE_DIR})
 if(DOWNLOAD_GTEST OR GTEST_SRC_DIR)
     add_dependencies(test_xtl gtest_main)
 endif()
-target_link_libraries(test_xtl xtl ${GTEST_BOTH_LIBRARIES} Threads::Threads ${nlohmann_json_TARGET})
+target_link_libraries(test_xtl xtl GTest::GTest GTest::Main Threads::Threads ${nlohmann_json_TARGET})
 
 add_custom_target(xtest COMMAND test_xtl DEPENDS test_xtl)
+add_test(NAME xtest COMMAND test_xtl)
