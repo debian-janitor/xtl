@@ -7,7 +7,7 @@ Build-Depends: debhelper-compat (= 12),
                libgtest-dev (>= 1.8.1)
 Standards-Version: 4.5.0
 Section: libs
-Homepage: https://github.com/QuantStack/xtl
+Homepage: https://github.com/xtensor-stack/xtl
 Vcs-Browser: https://github.com/quantstack-debian/xtl
 Vcs-Git: https://github.com/quantstack-debian/xtl.git
 Rules-Requires-Root: no

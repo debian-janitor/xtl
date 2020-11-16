@@ -10,6 +10,7 @@ xtl (0.6.21-1) UNRELEASED; urgency=medium
     log scanning errors. (Closes: #961402)
   * Update Standards-Version to 4.5.0
   * Declare Rules-Requires-Root: no
+  * Update homepage to github.com/xtensor-stack/xtl
 
  -- Gordon Ball <gordon@chronitis.net>  Mon, 16 Nov 2020 09:11:29 +0000
 
