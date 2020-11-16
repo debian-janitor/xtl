@@ -1,0 +1,59 @@
+From: Gordon Ball <gordon@chronitis.net>
+Date: Mon, 2 Nov 2020 08:32:51 +0000
+Subject: Install cmake, pkgconfig in usr/share
+
+Currently these are installed in arch-specific usr/lib/tuple
+directories, but since they only describe headers, they contain nothing
+architecture dependent. Install these files instead in usr/share
+(CMAKE_INSTALL_DATAROOTDIR) as is done for other header libraries.
+---
+ CMakeLists.txt | 13 ++++---------
+ xtl.pc.in      |  1 -
+ 2 files changed, 4 insertions(+), 10 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4f1aa94..5609a1a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -121,22 +121,17 @@ install(FILES ${XTL_HEADERS}
+         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xtl)
+ endif()
+ 
+-set(XTL_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE
++set(XTL_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/cmake/${PROJECT_NAME}" CACHE
+     STRING "install path for xtlConfig.cmake")
+ 
+ configure_package_config_file(${PROJECT_NAME}Config.cmake.in
+                               "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+                               INSTALL_DESTINATION ${XTL_CMAKECONFIG_INSTALL_DIR})
+ 
+-# xtl is header-only and does not depend on the architecture.
+-# Remove CMAKE_SIZEOF_VOID_P from xtlConfigVersion.cmake so that an xtlConfig.cmake
+-# generated for a 64 bit target can be used for 32 bit targets and vice versa.
+-set(_XTL_CMAKE_SIZEOF_VOID_P ${CMAKE_SIZEOF_VOID_P})
+-unset(CMAKE_SIZEOF_VOID_P)
+ write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+                                  VERSION ${${PROJECT_NAME}_VERSION}
+-                                 COMPATIBILITY AnyNewerVersion)
+-set(CMAKE_SIZEOF_VOID_P ${_XTL_CMAKE_SIZEOF_VOID_P})
++                                 COMPATIBILITY AnyNewerVersion
++                                 ARCH_INDEPENDENT)
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+         DESTINATION ${XTL_CMAKECONFIG_INSTALL_DIR})
+@@ -148,4 +143,4 @@ configure_file(${PROJECT_NAME}.pc.in
+                "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
+                 @ONLY)
+ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
+-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig/")
++        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig/")
+diff --git a/xtl.pc.in b/xtl.pc.in
+index fa71ede..e4ee4db 100644
+--- a/xtl.pc.in
++++ b/xtl.pc.in
+@@ -1,5 +1,4 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+-libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+ includedir=${prefix}/include
+ 
+ Name: xtl

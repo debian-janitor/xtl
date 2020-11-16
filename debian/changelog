@@ -1,3 +1,16 @@
+xtl (0.6.21-1) UNRELEASED; urgency=medium
+
+  * New upstream version: 0.6.21
+  * Make xtl-dev arch:all. As this is a header-only library (+cmake and
+    pkg-config metadata), installing to arch-dependent tasks and duplicating
+    the package can be avoided. This moves the metadata from usr/lib/tuple to
+    usr/share.
+  * Patch out use of -march=native in tests. This didn't affect the result
+    (since there was no compiled object in the package), but generated build
+    log scanning errors. (Closes: #961402)
+
+ -- Gordon Ball <gordon@chronitis.net>  Mon, 16 Nov 2020 09:11:29 +0000
+
 xtl (0.6.9-1) unstable; urgency=medium
 
   * Initial release (Closes: #939936)

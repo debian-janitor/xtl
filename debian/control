@@ -13,8 +13,7 @@ Vcs-Git: https://github.com/quantstack-debian/xtl.git
 
 Package: xtl-dev
 Section: libdevel
-Architecture: any
-Multi-Arch: same
+Architecture: all
 Depends: ${misc:Depends}
 Description: basic tools (containers, algorithms) used for xtensor and xeus
  This package contains additional containers and tools missing from

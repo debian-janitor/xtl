@@ -1,0 +1,44 @@
+From: Gordon Ball <gordon@chronitis.net>
+Date: Mon, 2 Nov 2020 08:33:51 +0000
+Subject: Disable -march=native for tests
+
+This doesn't affect the built artifacts, but triggers warnings from
+build log scanning.
+---
+ test/CMakeLists.txt | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index 3dcbbbc..99aea51 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -37,13 +37,7 @@ endif()
+ if(CMAKE_CXX_COMPILER_ID MATCHES GNU OR CMAKE_CXX_COMPILER_ID MATCHES Intel)
+     add_compile_options(-Wunused-parameter -Wextra -Wreorder -Wconversion -Wsign-conversion)
+ 
+-    if(NOT CMAKE_CXX_FLAGS MATCHES "-march")
+-        CHECK_CXX_COMPILER_FLAG(-march=native HAS_MARCH_NATIVE)
+-        if (HAS_MARCH_NATIVE)
+-            add_compile_options(-march=native)
+-        endif()
+-    endif()
+-    if (XTL_DISABLE_EXCEPTIONS)
++   if (XTL_DISABLE_EXCEPTIONS)
+         add_compile_options(-fno-exceptions)
+     endif()
+ endif()
+@@ -60,13 +54,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+   if(NOT WIN32)
+     add_compile_options(-Wunused-parameter -Wextra -Wreorder -Wconversion -Wsign-conversion)
+ 
+-    if(NOT CMAKE_CXX_FLAGS MATCHES "-march")
+-        CHECK_CXX_COMPILER_FLAG(-march=native HAS_MARCH_NATIVE)
+-        if (HAS_MARCH_NATIVE)
+-            add_compile_options(-march=native)
+-        endif()
+-    endif()
+-    if (XTL_DISABLE_EXCEPTIONS)
++   if (XTL_DISABLE_EXCEPTIONS)
+         add_compile_options(-fno-exceptions)
+     endif()
+   else() # we are using clang-cl
