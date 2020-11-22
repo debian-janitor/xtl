@@ -1,5 +1,6 @@
-xtl (0.6.21-1) UNRELEASED; urgency=medium
+xtl (0.6.21-1) unstable; urgency=medium
 
+  [ Gordon Ball ]
   * New upstream version: 0.6.21
   * Make xtl-dev arch:all. As this is a header-only library (+cmake and
     pkg-config metadata), installing to arch-dependent tasks and duplicating
@@ -12,7 +13,10 @@ xtl (0.6.21-1) UNRELEASED; urgency=medium
   * Declare Rules-Requires-Root: no
   * Update homepage to github.com/xtensor-stack/xtl
 
- -- Gordon Ball <gordon@chronitis.net>  Mon, 16 Nov 2020 09:11:29 +0000
+  [ Vincent Bernat ]
+  * Prepare for release
+
+ -- Vincent Bernat <bernat@debian.org>  Sun, 22 Nov 2020 16:02:55 +0100
 
 xtl (0.6.9-1) unstable; urgency=medium
 
