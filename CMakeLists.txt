@@ -63,6 +63,7 @@ set(XTL_HEADERS
     ${XTL_INCLUDE_DIR}/xtl/xplatform.hpp
     ${XTL_INCLUDE_DIR}/xtl/xproxy_wrapper.hpp
     ${XTL_INCLUDE_DIR}/xtl/xsequence.hpp
+    ${XTL_INCLUDE_DIR}/xtl/xsystem.hpp
     ${XTL_INCLUDE_DIR}/xtl/xtl_config.hpp
     ${XTL_INCLUDE_DIR}/xtl/xtype_traits.hpp
     ${XTL_INCLUDE_DIR}/xtl/xvariant.hpp
@@ -121,7 +122,7 @@ install(FILES ${XTL_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xtl)
 endif()
 
-set(XTL_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE
+set(XTL_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/cmake/${PROJECT_NAME}" CACHE
     STRING "install path for xtlConfig.cmake")
 
 configure_package_config_file(${PROJECT_NAME}Config.cmake.in
@@ -133,9 +134,17 @@ configure_package_config_file(${PROJECT_NAME}Config.cmake.in
 # generated for a 64 bit target can be used for 32 bit targets and vice versa.
 set(_XTL_CMAKE_SIZEOF_VOID_P ${CMAKE_SIZEOF_VOID_P})
 unset(CMAKE_SIZEOF_VOID_P)
-write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-                                 VERSION ${${PROJECT_NAME}_VERSION}
-                                 COMPATIBILITY AnyNewerVersion)
+# ARCH_INDEPENDENT feature was introduced in cmake 3.14
+if (${CMAKE_VERSION} VERSION_LESS "3.14.0")
+    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+                                     VERSION ${${PROJECT_NAME}_VERSION}
+                                     COMPATIBILITY AnyNewerVersion)
+else ()
+    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+                                     VERSION ${${PROJECT_NAME}_VERSION}
+                                     COMPATIBILITY AnyNewerVersion
+                                     ARCH_INDEPENDENT)
+endif ()
 set(CMAKE_SIZEOF_VOID_P ${_XTL_CMAKE_SIZEOF_VOID_P})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
@@ -148,4 +157,4 @@ configure_file(${PROJECT_NAME}.pc.in
                "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
                 @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig/")
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig/")
