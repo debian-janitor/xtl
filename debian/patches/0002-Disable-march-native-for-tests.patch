@@ -9,7 +9,7 @@ build log scanning.
  1 file changed, 2 insertions(+), 14 deletions(-)
 
 diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
-index 3dcbbbc..99aea51 100644
+index 4c94e98..3a816f5 100644
 --- a/test/CMakeLists.txt
 +++ b/test/CMakeLists.txt
 @@ -37,13 +37,7 @@ endif()
