@@ -7,6 +7,17 @@
 Changelog
 =========
 
+0.6.23
+------
+
+- Added ``xtl::executable_path`` and ``xtl::prefix_path``
+
+0.6.22
+------
+
+- Handle complex promote type w/ different T1 and T2
+- Install as arch dependent for cmake > 3.14
+
 0.6.21
 ------
 
