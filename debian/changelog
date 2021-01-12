@@ -1,4 +1,4 @@
-xtl (0.6.23-1) UNRELEASED; urgency=medium
+xtl (0.6.23-1) unstable; urgency=medium
 
   * New upstream version 0.6.23
   * Update patches
@@ -7,7 +7,7 @@ xtl (0.6.23-1) UNRELEASED; urgency=medium
       build directory naming
   * Run the test suite as an autopkgtest
 
- -- Gordon Ball <gordon@chronitis.net>  Tue, 15 Dec 2020 13:27:19 +0000
+ -- Gordon Ball <gordon@chronitis.net>  Tue, 12 Jan 2021 12:35:53 +0000
 
 xtl (0.6.21-1) unstable; urgency=medium
 
