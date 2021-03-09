@@ -7,6 +7,26 @@
 Changelog
 =========
 
+0.7.2
+-----
+
+- Removed C++14 code from xbase_fixed_string 
+
+0.7.1
+-----
+
+- test/test_xsystem.cpp: Allow for ctest executable names
+- Fixed return type in xbasic_fixed_string to be compatible with C++11
+
+0.7.0
+-----
+
+- Added missing FreeBSD headers
+- Fixed call to sysctl
+- Added meta switch
+- Implement partial dispatch
+- Improve xbasic fixed string
+
 0.6.23
 ------
 
