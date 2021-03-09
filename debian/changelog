@@ -1,8 +1,10 @@
-xtl (0.7.2-1) UNRELEASED; urgency=medium
+xtl (0.7.2-1) experimental; urgency=medium
 
   * New upstream version. Closes: #984872.
+  * d/patches: drop -march=native patch
+  * d/patches: remove patch for broken test, fixed upstream
 
- -- Vincent Bernat <bernat@debian.org>  Tue, 09 Mar 2021 21:17:11 +0100
+ -- Vincent Bernat <bernat@debian.org>  Tue, 09 Mar 2021 21:25:23 +0100
 
 xtl (0.6.23-1) unstable; urgency=medium
 
