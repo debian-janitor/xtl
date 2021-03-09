@@ -1,3 +1,9 @@
+xtl (0.7.2-1) UNRELEASED; urgency=medium
+
+  * New upstream version. Closes: #984872.
+
+ -- Vincent Bernat <bernat@debian.org>  Tue, 09 Mar 2021 21:17:11 +0100
+
 xtl (0.6.23-1) unstable; urgency=medium
 
   * New upstream version 0.6.23
